@@ -1,6 +1,5 @@
 const { spawn } = require('child_process');
 const test = require('tape');
-const fetch = require('node-fetch');
 
 const serverStart = () => new Promise ((resolve, reject) => {
    const server = spawn('node', ['../server.js'], {
@@ -16,8 +15,9 @@ const serverStart = () => new Promise ((resolve, reject) => {
 });
 
 test('GET /recipes/42', async (t) => {
-   const { server, url } = await serverStart();
-   const results = await fetch(`${url}/recipes/42`);
+    const fetch = (await import('node-fetch')).default;
+    const { server, url } = await serverStart();
+    const results = await fetch(`${url}/recipes/42`);
 
    const body = await results.json();
    t.equal(body.id, 42);
@@ -25,6 +25,7 @@ test('GET /recipes/42', async (t) => {
 });
 
 test('GET /', async (t) => {
+    const fetch = (await import('node-fetch')).default;
     const { server, url } = await serverStart();
     const results = await fetch(`${url}/`);
     const body = await results.text();
