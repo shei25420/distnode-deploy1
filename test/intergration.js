@@ -1,5 +1,6 @@
 const { spawn } = require('child_process');
 const test = require('tape');
+const fetch = require('node-fetch');
 
 const serverStart = () => new Promise ((resolve, reject) => {
    const server = spawn('node', ['../server.js'], {
